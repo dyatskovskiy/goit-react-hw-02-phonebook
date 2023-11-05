@@ -29,8 +29,6 @@ export class App extends Component {
   };
 
   render() {
-    const { name } = this.state;
-
     return (
       <div>
         <h1>Phonebook</h1>
