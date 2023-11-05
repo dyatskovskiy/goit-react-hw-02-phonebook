@@ -1,44 +1,40 @@
 import { Component } from 'react';
+
 import { ContactForm } from './ContactForm/ContactForm';
-import { nanoid } from 'nanoid';
+import { ContactList } from './ContactList/ContactList';
+import { Contact } from 'components/Contact/Contact';
 
 export class App extends Component {
   state = {
     contacts: [],
-    name: '',
   };
 
-  updateName = newName => {
-    this.setState(() => {
-      return {
-        name: newName,
-      };
-    });
-  };
-
-  addContact = () => {
+  addContact = newContact => {
     this.setState(prevState => {
       return {
-        contacts: [
-          ...prevState.contacts,
-          { name: this.state.name, id: nanoid() },
-        ],
-        name: '',
+        contacts: [...prevState.contacts, newContact],
       };
     });
   };
 
   render() {
+    const { name, contacts } = this.state;
     return (
       <div>
         <h1>Phonebook</h1>
-        <ContactForm
-          name={this.state.name}
-          onUpdateName={this.updateName}
-          onAddContact={this.addContact}
-        />
+        <ContactForm name={name} onAddContact={this.addContact} />
 
-        <h2>Contacts</h2>
+        {contacts.length > 0 && (
+          <ContactList>
+            {contacts.map(contact => (
+              <Contact
+                key={contact.id}
+                name={contact.name}
+                number={contact.number}
+              />
+            ))}
+          </ContactList>
+        )}
       </div>
     );
   }
