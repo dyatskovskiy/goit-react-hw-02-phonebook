@@ -1,5 +1,31 @@
-import { Formik, Field, Form } from 'formik';
+import { Formik } from 'formik';
+import { Form, Field, Button, ErrorMessage } from './ContactForm.styled';
 import { nanoid } from 'nanoid';
+import * as Yup from 'yup';
+
+// const contactsFormSchema = Yup.object().shape({
+//   name: Yup.string()
+//     .min(3, 'Too Short!')
+//     .max(50, 'Too Long!')
+//     .required('Required field'),
+//   number: Yup.string()
+//     .min(2, 'Too Short!')
+//     .max(50, 'Too Long!')
+//     .required('Required field'),
+// });
+
+const contactsFormSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(3, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required field'),
+  number: Yup.string()
+    .matches(
+      /^[0-9]{3}-[0-9]{2}-[0-9]{2}$/,
+      'Please, enter only digits in format of "123-12-12"'
+    )
+    .required('Required field'),
+});
 
 export const ContactForm = ({ onAddContact }) => {
   return (
@@ -8,6 +34,7 @@ export const ContactForm = ({ onAddContact }) => {
         name: '',
         number: '',
       }}
+      validationSchema={contactsFormSchema}
       onSubmit={values => {
         onAddContact({
           name: values.name,
@@ -18,39 +45,15 @@ export const ContactForm = ({ onAddContact }) => {
     >
       <Form>
         <label htmlFor="name">Name</label>
-        <Field id="name" name="name" required />
+        <Field id="name" name="name" />
+        <ErrorMessage name="name" component={'span'}></ErrorMessage>
 
         <label htmlFor="number">Number</label>
-        <Field id="number" name="number" type="tel" required />
+        <Field id="number" name="number" type="tel" />
+        <ErrorMessage name="number" component={'span'}></ErrorMessage>
 
-        <button type="submit">Add contact</button>
+        <Button type="submit">Add contact</Button>
       </Form>
     </Formik>
   );
 };
-// import { nanoid } from 'nanoid';
-
-// export const ContactForm = ({ name, onUpdateName, onAddContact }) => {
-//   return (
-//     <form
-//       onSubmit={evt => {
-//         evt.preventDefault();
-//         onAddContact({
-//           name: evt.target.name.value,
-//           id: nanoid(),
-//         });
-//       }}
-//     >
-// <label htmlFor="name">
-//   Name
-//   <input
-//     type="text"
-//     id="name"
-//     value={name}
-//     onChange={evt => onUpdateName(evt.target.value)}
-//   />
-// </label>
-//       <button type="submit">Add contact</button>
-//     </form>
-//   );
-// };
