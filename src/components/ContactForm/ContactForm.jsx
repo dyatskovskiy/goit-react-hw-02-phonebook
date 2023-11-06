@@ -1,7 +1,7 @@
 import { Formik, Field, Form } from 'formik';
 import { nanoid } from 'nanoid';
 
-export const ContactForm = ({ name, onUpdateName, onAddContact }) => {
+export const ContactForm = ({ onAddContact }) => {
   return (
     <Formik
       initialValues={{
@@ -18,10 +18,10 @@ export const ContactForm = ({ name, onUpdateName, onAddContact }) => {
     >
       <Form>
         <label htmlFor="name">Name</label>
-        <Field id="name" name="name" />
+        <Field id="name" name="name" required />
 
         <label htmlFor="number">Number</label>
-        <Field id="number" name="number" type="tel" />
+        <Field id="number" name="number" type="tel" required />
 
         <button type="submit">Add contact</button>
       </Form>
