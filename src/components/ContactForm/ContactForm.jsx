@@ -3,17 +3,6 @@ import { Form, Field, Button, ErrorMessage } from './ContactForm.styled';
 import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
 
-// const contactsFormSchema = Yup.object().shape({
-//   name: Yup.string()
-//     .min(3, 'Too Short!')
-//     .max(50, 'Too Long!')
-//     .required('Required field'),
-//   number: Yup.string()
-//     .min(2, 'Too Short!')
-//     .max(50, 'Too Long!')
-//     .required('Required field'),
-// });
-
 const contactsFormSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, 'Too Short!')
@@ -35,12 +24,13 @@ export const ContactForm = ({ onAddContact }) => {
         number: '',
       }}
       validationSchema={contactsFormSchema}
-      onSubmit={values => {
+      onSubmit={(values, actions) => {
         onAddContact({
           name: values.name,
           number: values.number,
           id: nanoid(),
         });
+        actions.resetForm();
       }}
     >
       <Form>
